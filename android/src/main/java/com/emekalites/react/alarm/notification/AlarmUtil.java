@@ -145,26 +145,15 @@ class AlarmUtil {
         intent.putExtra("PendingId", alarm.getId());
 
         PendingIntent alarmIntent = PendingIntent.getBroadcast(mContext, alarmId, intent, defaultFlags);
-        AlarmManager alarmManager = this.getAlarmManager();
+        AlarmManager alarmManager = this.getAlarmManager(); 
 
-        // String scheduleType = alarm.getScheduleType();
-
-        // if (scheduleType.equals("once")) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
-            } else {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
-            }
-        // } else if (scheduleType.equals("repeat")) {
-        //     long interval = this.getInterval(alarm.getInterval(), alarm.getIntervalValue());
-
-        //     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), interval, alarmIntent);
-        // } else {
-        //     Log.d(TAG, "Schedule type should either be once or repeat");
-        //     return;
-        // }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+        } else {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+        } 
 
         this.setBootReceiver();
     }
@@ -196,23 +185,13 @@ class AlarmUtil {
         PendingIntent alarmIntent = PendingIntent.getBroadcast(mContext, alarmId, intent, defaultFlags);
         AlarmManager alarmManager = this.getAlarmManager();
 
-        // String scheduleType = alarm.getScheduleType();
-
-        // if (scheduleType.equals("once")) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
-            } else {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
-            }
-        // } else if (scheduleType.equals("repeat")) {
-        //     long interval = this.getInterval(alarm.getInterval(), alarm.getIntervalValue());
-
-        //     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), interval, alarmIntent);
-        // } else {
-        //     Log.d(TAG, "Schedule type should either be once or repeat");
-        // }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+        } else {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+        }
     }
 
     void repeatAlarm(AlarmModel alarm) {
