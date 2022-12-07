@@ -221,6 +221,12 @@ class AlarmUtil {
         }
     }
 
+    void repeatAlarmById(int id) {
+        AlarmModel alarm = getAlarmDB().getAlarm(id);        
+        
+        this.repeatAlarm(alarm);
+    }
+
     long getInterval(String interval, int value) {
         long duration = 1;
 
