@@ -207,6 +207,12 @@ public class ANModule extends ReactContextBaseJavaModule {
         promise.resolve(array);
     }
 
+    @ReactMethod
+    public void createChannel(String channel, String color, boolean isBypassDnd, boolean isVibrate,
+                              int vibration) {
+        alarmUtil.createChannel(channel, color, isBypassDnd, isVibrate, (long)vibration);
+    }
+
     private static String bundle2string(Bundle bundle) {
         if (bundle == null) {
             return null;
