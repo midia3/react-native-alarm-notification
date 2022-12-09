@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 
 const { RNAlarmNotification } = NativeModules;
 const ReactNativeAN = {};
@@ -173,7 +173,10 @@ ReactNativeAN.parseDate = (rawDate) => {
 };
 
 ReactNativeAN.createChannel = (channel, color = null, isBypassDnd = false, isVibrate = false, vibration = 0) => {
-	RNAlarmNotification.createChannel(channel, color, isBypassDnd, isVibrate, vibration);
+	// iOS has no such concept of channel
+	if (Platform.OS === 'android') {
+		RNAlarmNotification.createChannel(channel, color, isBypassDnd, isVibrate, vibration);
+	}
 }
 
 export default ReactNativeAN;
