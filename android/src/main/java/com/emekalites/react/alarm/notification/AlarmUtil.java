@@ -145,7 +145,7 @@ class AlarmUtil {
         intent.putExtra("PendingId", alarm.getId());
 
         PendingIntent alarmIntent = PendingIntent.getBroadcast(mContext, alarmId, intent, defaultFlags);
-        AlarmManager alarmManager = this.getAlarmManager(); 
+        AlarmManager alarmManager = this.getAlarmManager();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
@@ -153,7 +153,7 @@ class AlarmUtil {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
         } else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
-        } 
+        }
 
         this.setBootReceiver();
     }
@@ -222,8 +222,8 @@ class AlarmUtil {
     }
 
     void repeatAlarmById(int id) {
-        AlarmModel alarm = getAlarmDB().getAlarm(id);        
-        
+        AlarmModel alarm = getAlarmDB().getAlarm(id);
+
         this.repeatAlarm(alarm);
     }
 
@@ -429,36 +429,14 @@ class AlarmUtil {
 
             long vibration = (long) alarm.getVibration();
 
-            long[] vibrationPattern = vibration == 0 ? DEFAULT_VIBRATE_PATTERN : new long[]{0, vibration, 1000, vibration};
-
+            // channel creation
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel mChannel = new NotificationChannel(channelID, "Alarm Notify", NotificationManager.IMPORTANCE_HIGH);
-                mChannel.enableLights(true);
-
-                String color = alarm.getColor();
-                if (color != null && !color.equals("")) {
-                    mChannel.setLightColor(Color.parseColor(color));
-                }
-
-                if(!mChannel.canBypassDnd()){
-                    mChannel.setBypassDnd(alarm.isBypassDnd());
-                }
-
-                mChannel.setVibrationPattern(null);
-
-                // play vibration
-                if (alarm.isVibrate()) {
-                    Vibrator vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
-                    if (vibrator.hasVibrator()) {
-                        vibrator.vibrate(VibrationEffect.createWaveform(vibrationPattern, 0));
-                    }
-                }
-
-                mNotificationManager.createNotificationChannel(mChannel);
+                createChannel(channelID, alarm.getColor(), alarm.isBypassDnd(),
+                        alarm.isVibrate(), vibration, mNotificationManager);
                 mBuilder.setChannelId(channelID);
             } else {
                 // set vibration
-                mBuilder.setVibrate(alarm.isVibrate() ? vibrationPattern : null);
+                mBuilder.setVibrate(alarm.isVibrate() ? getVibrationPattern(vibration) : null);
             }
 
             //color
@@ -514,6 +492,43 @@ class AlarmUtil {
             }
         } catch (Exception e) {
             Log.e(TAG, "failed to send notification", e);
+        }
+    }
+
+    long[] getVibrationPattern(long vibration) {
+        return vibration == 0 ? DEFAULT_VIBRATE_PATTERN : new long[]{0, vibration, 1000, vibration};
+    }
+
+    void createChannel(String channelID, String color, boolean isBypassDnd, boolean isVibrate,
+                       long vibration) {
+        createChannel(channelID, color, isBypassDnd, isVibrate, vibration, getNotificationManager());
+    }
+
+    void createChannel(String channelID, String color, boolean isBypassDnd, boolean isVibrate,
+                       long vibration, NotificationManager mNotificationManager) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(channelID, "Alarm Notify", NotificationManager.IMPORTANCE_HIGH);
+            mChannel.enableLights(true);
+
+            if (color != null && !color.equals("")) {
+                mChannel.setLightColor(Color.parseColor(color));
+            }
+
+            if(!mChannel.canBypassDnd()){
+                mChannel.setBypassDnd(isBypassDnd);
+            }
+
+            mChannel.setVibrationPattern(null);
+
+            // play vibration
+            if (isVibrate) {
+                Vibrator vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+                if (vibrator.hasVibrator()) {
+                    vibrator.vibrate(VibrationEffect.createWaveform(getVibrationPattern(vibration), 0));
+                }
+            }
+
+            mNotificationManager.createNotificationChannel(mChannel);
         }
     }
 
