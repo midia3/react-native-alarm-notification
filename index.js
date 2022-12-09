@@ -172,7 +172,7 @@ ReactNativeAN.parseDate = (rawDate) => {
 	return `${day}-${month}-${rawDate.getFullYear()} ${hours}:${rawDate.getMinutes()}:${rawDate.getSeconds()}`;
 };
 
-ReactNativeAN.createChannel = (channel, color = null, isBypassDnd = false, isVibrate = true, vibration = 0) => {
+ReactNativeAN.createChannel = (channel, color = null, isBypassDnd = false, isVibrate = false, vibration = 0) => {
 	RNAlarmNotification.createChannel(channel, color, isBypassDnd, isVibrate, vibration);
 }
 
