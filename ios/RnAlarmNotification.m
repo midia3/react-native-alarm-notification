@@ -362,7 +362,12 @@ API_AVAILABLE(ios(10.0)) {
             if([playSound isEqualToNumber: [NSNumber numberWithInt: 1]]) {
                 BOOL notEmpty = [RnAlarmNotification checkStringIsNotEmpty:soundName];
                 if(notEmpty != YES){
-                    content.sound = UNNotificationSound.defaultSound;
+                    if (@available(iOS 12.0, *)) {
+                        content.sound = UNNotificationSound.defaultCriticalSound;
+                    }
+                    else {
+                        content.sound = UNNotificationSound.defaultSound;
+                    }
                 } else {
                     content.sound = [UNNotificationSound soundNamed:soundName];
                 }
@@ -748,8 +753,14 @@ RCT_EXPORT_METHOD(requestPermissions:(NSDictionary *)permissions
         UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
         
         [center setNotificationCategories:[NSSet setWithObjects:generalCategory, customCategory, nil]];
-        
-        [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UIUserNotificationTypeBadge + UNAuthorizationOptionSound) completionHandler:^(BOOL granted, NSError *_Nullable error) {
+        UNAuthorizationOptions options;
+        if (@available(iOS 12.0, *)) {
+            options = UNAuthorizationOptionAlert + UIUserNotificationTypeBadge + UNAuthorizationOptionSound + UNAuthorizationOptionCriticalAlert;
+        }
+        else {
+            options = UNAuthorizationOptionAlert + UIUserNotificationTypeBadge + UNAuthorizationOptionSound;
+        }
+        [center requestAuthorizationWithOptions:options completionHandler:^(BOOL granted, NSError *_Nullable error) {
             
             if (error != NULL) {
                 reject(@"-1", @"Error - Push authorization request failed.", error);
