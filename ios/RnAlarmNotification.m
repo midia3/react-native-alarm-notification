@@ -451,7 +451,12 @@ API_AVAILABLE(ios(10.0)) {
                 BOOL notEmpty = [RnAlarmNotification checkStringIsNotEmpty:soundName];
                 if(notEmpty != YES){
                     NSLog(@"use default sound");
-                    content.sound = UNNotificationSound.defaultSound;
+                    if (@available(iOS 12.0, *)) {
+                        content.sound = UNNotificationSound.defaultCriticalSound;
+                    }
+                    else {
+                        content.sound = UNNotificationSound.defaultSound;
+                    }
                 } else {
                     content.sound = [UNNotificationSound soundNamed:soundName];
                 }
@@ -526,7 +531,12 @@ RCT_EXPORT_METHOD(scheduleAlarm: (NSDictionary *)details resolver:(RCTPromiseRes
             if([details[@"play_sound"] isEqualToNumber: [NSNumber numberWithInt: 1]]) {
                 BOOL notEmpty = [RnAlarmNotification checkStringIsNotEmpty:details[@"sound_name"]];
                 if(notEmpty != YES){
-                    content.sound = UNNotificationSound.defaultSound;
+                    if (@available(iOS 12.0, *)) {
+                        content.sound = UNNotificationSound.defaultCriticalSound;
+                    }
+                    else {
+                        content.sound = UNNotificationSound.defaultSound;
+                    }
                 } else {
                     content.sound = [UNNotificationSound soundNamed:details[@"sound_name"]];
                 }
@@ -595,7 +605,12 @@ RCT_EXPORT_METHOD(sendNotification: (NSDictionary *)details) {
             if([details[@"play_sound"] isEqualToNumber: [NSNumber numberWithInt: 1]]) {
                 BOOL notEmpty = [RnAlarmNotification checkStringIsNotEmpty:details[@"sound_name"]];
                 if(notEmpty != YES){
-                    content.sound = UNNotificationSound.defaultSound;
+                    if (@available(iOS 12.0, *)) {
+                        content.sound = UNNotificationSound.defaultCriticalSound;
+                    }
+                    else {
+                        content.sound = UNNotificationSound.defaultSound;
+                    }
                 } else {
                     content.sound = [UNNotificationSound soundNamed:details[@"sound_name"]];
                 }
