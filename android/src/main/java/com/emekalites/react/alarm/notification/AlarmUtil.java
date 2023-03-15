@@ -197,6 +197,9 @@ class AlarmUtil {
     void repeatAlarm(AlarmModel alarm) {
         String scheduleType = alarm.getScheduleType();
 
+        long time = System.currentTimeMillis() / 1000;
+        alarm.setAlarmId((int) time);
+        
         if(scheduleType.equals("repeat")){
             getAlarmDB().delete(alarm.getId());
 
