@@ -146,10 +146,10 @@ RCT_EXPORT_MODULE(RNAlarmNotification);
         [RnAlarmNotification playSound:notification];
     }
     
-    NSString *scheduleType = [notification.request.content.userInfo objectForKey:@"schedule_type"];
-    if([scheduleType isEqualToString:@"repeat"]){
-        [RnAlarmNotification repeatAlarm:notification];
-    }
+    // NSString *scheduleType = [notification.request.content.userInfo objectForKey:@"schedule_type"];
+    // if([scheduleType isEqualToString:@"repeat"]){
+    //     [RnAlarmNotification repeatAlarm:notification];
+    // }
 }
 
 + (void)didReceiveNotificationResponse:(UNNotificationResponse *)response
@@ -335,7 +335,7 @@ API_AVAILABLE(ios(10.0)) {
             NSString *stringFromDate = [formatter stringFromDate:dateString];
             NSLog(@"%@", stringFromDate);
             
-            UNCalendarNotificationTrigger* trigger = [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:fireDate repeats:NO];
+            UNCalendarNotificationTrigger* trigger = [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:fireDate repeats:YES];
             
             // alarm id
             NSString *alarmId = [contentInfo.userInfo objectForKey:@"alarmId"];
@@ -424,7 +424,7 @@ API_AVAILABLE(ios(10.0)) {
             
             NSDateComponents *newFireDate = dateToComponents(newDate);
             
-            UNCalendarNotificationTrigger* trigger = [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:newFireDate repeats:NO];
+            UNCalendarNotificationTrigger* trigger = [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:newFireDate repeats:YES];
             
             NSString *alarmId = [NSString stringWithFormat: @"%ld", (long) NSDate.date.timeIntervalSince1970];
             
@@ -504,7 +504,7 @@ RCT_EXPORT_METHOD(scheduleAlarm: (NSDictionary *)details resolver:(RCTPromiseRes
             // set alarm date
             NSDateComponents *fireDate = parseDate(details[@"fire_date"]);
             
-            UNCalendarNotificationTrigger* trigger = [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:fireDate repeats:NO];
+            UNCalendarNotificationTrigger* trigger = [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:fireDate repeats:YES];
             
             // alarm id
             NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
