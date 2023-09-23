@@ -507,9 +507,13 @@ RCT_EXPORT_METHOD(scheduleAlarm: (NSDictionary *)details resolver:(RCTPromiseRes
             UNCalendarNotificationTrigger* trigger = [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:fireDate repeats:NO];
             
             // alarm id
-            NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-            NSString *alarmId = [NSString stringWithFormat: @"%ld", (long) [[gregorianCalendar dateFromComponents:fireDate] timeIntervalSince1970]];
+            // NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+            // NSString *alarmId = [NSString stringWithFormat: @"%ld", (long) [[gregorianCalendar dateFromComponents:fireDate] timeIntervalSince1970]];
             
+            // new alarm id strategy
+            NSInteger randomNumber = arc4random_uniform(1000000);
+            NSString *alarmId = [NSString stringWithFormat:@"%ld", (long)randomNumber];
+
             NSString *volume = [details[@"volume"] stringValue];
             
             content.userInfo = @{
