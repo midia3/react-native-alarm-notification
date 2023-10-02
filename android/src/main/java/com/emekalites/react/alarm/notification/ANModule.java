@@ -57,7 +57,7 @@ public class ANModule extends ReactContextBaseJavaModule {
         AlarmModel alarm = new AlarmModel();
 
         Random r = new Random();
-        long time = System.currentTimeMillis() / 1000 + r.nextInt(1000) ;
+        long time = System.currentTimeMillis() / 1000 + r.nextInt(1000);
 
         alarm.setAlarmId((int) time);
 
@@ -76,7 +76,7 @@ public class ANModule extends ReactContextBaseJavaModule {
         alarm.setPlaySound(bundle.getBoolean("play_sound", true));
         alarm.setScheduleType(bundle.getString("schedule_type", "once"));
         alarm.setSmallIcon(bundle.getString("small_icon", "ic_launcher"));
-        alarm.setSnoozeInterval((int)bundle.getDouble("snooze_interval", 1.0));
+        alarm.setSnoozeInterval((int) bundle.getDouble("snooze_interval", 1.0));
         alarm.setSoundName(bundle.getString("sound_name", null));
         alarm.setSoundNames(bundle.getString("sound_names", null));
         alarm.setTag(bundle.getString("tag", ""));
@@ -84,10 +84,10 @@ public class ANModule extends ReactContextBaseJavaModule {
         alarm.setTitle(bundle.getString("title", "My Notification Title"));
         alarm.setVibrate(bundle.getBoolean("vibrate", true));
         alarm.setHasButton(bundle.getBoolean("has_button", false));
-        alarm.setVibration((int)bundle.getDouble("vibration", 100.0));
+        alarm.setVibration((int) bundle.getDouble("vibration", 100.0));
         alarm.setUseBigText(bundle.getBoolean("use_big_text", false));
         alarm.setVolume(bundle.getDouble("volume", 0.5));
-        alarm.setIntervalValue((int)bundle.getDouble("interval_value", 1));
+        alarm.setIntervalValue((int) bundle.getDouble("interval_value", 1));
         alarm.setBypassDnd(bundle.getBoolean("bypass_dnd", false));
 
         String datetime = bundle.getString("fire_date");
@@ -98,25 +98,19 @@ public class ANModule extends ReactContextBaseJavaModule {
 
         alarmUtil.setAlarmFromCalendar(alarm, calendar);
 
-        // check if alarm has been set at this time
-        boolean containAlarm = alarmUtil.checkAlarm(getAlarmDB().getAlarmList(1), alarm);
-        if (!containAlarm) {
-            try {
-                int id = getAlarmDB().insert(alarm);
-                alarm.setId(id);
+        try {
+            int id = getAlarmDB().insert(alarm);
+            alarm.setId(id);
 
-                alarmUtil.setAlarm(alarm);
+            alarmUtil.setAlarm(alarm);
 
-                WritableMap map = Arguments.createMap();
-                map.putInt("id", id);
+            WritableMap map = Arguments.createMap();
+            map.putInt("id", id);
 
-                promise.resolve(map);
-            } catch (Exception e) {
-                e.printStackTrace();
-                promise.reject(E_SCHEDULE_ALARM_FAILED, e);
-            }
-        } else {
-            promise.reject(E_SCHEDULE_ALARM_FAILED, "duplicate alarm set at date");
+            promise.resolve(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            promise.reject(E_SCHEDULE_ALARM_FAILED, e);
         }
     }
 
@@ -158,7 +152,7 @@ public class ANModule extends ReactContextBaseJavaModule {
         alarm.setMessage(bundle.getString("message", "My Notification Message"));
         alarm.setPlaySound(bundle.getBoolean("play_sound", true));
         alarm.setSmallIcon(bundle.getString("small_icon", "ic_launcher"));
-        alarm.setSnoozeInterval((int)bundle.getDouble("snooze_interval", 1));
+        alarm.setSnoozeInterval((int) bundle.getDouble("snooze_interval", 1));
         alarm.setSoundName(bundle.getString("sound_name"));
         alarm.setSoundNames(bundle.getString("sound_names"));
         alarm.setTag(bundle.getString("tag"));
@@ -166,7 +160,7 @@ public class ANModule extends ReactContextBaseJavaModule {
         alarm.setTitle(bundle.getString("title", "My Notification Title"));
         alarm.setVibrate(bundle.getBoolean("loop_sound", true));
         alarm.setHasButton(bundle.getBoolean("has_button", false));
-        alarm.setVibration((int)bundle.getDouble("vibration", 100));
+        alarm.setVibration((int) bundle.getDouble("vibration", 100));
         alarm.setUseBigText(bundle.getBoolean("use_big_text", false));
         alarm.setVolume(bundle.getDouble("volume", 0.5));
         alarm.setBypassDnd(bundle.getBoolean("bypass_dnd", false));
@@ -209,8 +203,8 @@ public class ANModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void createChannel(String channel, String color, boolean isBypassDnd, boolean isVibrate,
-                              int vibration) {
-        alarmUtil.createChannel(channel, color, isBypassDnd, isVibrate, (long)vibration);
+            int vibration) {
+        alarmUtil.createChannel(channel, color, isBypassDnd, isVibrate, (long) vibration);
     }
 
     private static String bundle2string(Bundle bundle) {
