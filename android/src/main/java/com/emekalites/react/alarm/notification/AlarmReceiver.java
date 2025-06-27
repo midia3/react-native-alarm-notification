@@ -69,6 +69,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                         break;
 
                     case Constants.NOTIFICATION_ACTION_DISMISS:
+                        alarmUtil.stopAlarmSound();
+                        
                         id = intent.getExtras().getInt("AlarmId");
 
                         try {
@@ -76,10 +78,12 @@ public class AlarmReceiver extends BroadcastReceiver {
                             Log.e(TAG, "alarm cancelled: " + alarm.toString());
 
                             // emit notification dismissed
-                            ANModule.getReactAppContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("OnNotificationDismissed", "{\"id\": \"" + alarm.getId() + "\"}");
+                            ANModule.getReactAppContext()
+                                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                    .emit("OnNotificationDismissed", "{\"id\": \"" + alarm.getId() + "\"}");
 
                             alarmUtil.removeFiredNotification(alarm.getId());
-                            
+
                             alarmUtil.cancelAlarm(alarm, false);
 
                             alarmUtil.repeatAlarm(alarm);
@@ -90,7 +94,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                         break;
                     default:
                         alarmUtil.stopAlarmSound();
-                    break;
+                        break;
                 }
             } else {
                 if (!Constants.ADD_INTENT.equals(intentType)) {
