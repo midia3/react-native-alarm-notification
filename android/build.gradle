@@ -86,7 +86,7 @@ repositories {
         url "$rootDir/../node_modules/jsc-android/dist"
     }
     google()
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -130,7 +130,7 @@ afterEvaluate { project ->
     def javaCompileTask = variant.javaCompileProvider.get()
 
         task "jar${name}"(type: Jar, dependsOn: javaCompileTask) {
-            from javaCompileTask.destinationDir
+            from javaCompileTask.destinationDirectory
         }
     }
 }
