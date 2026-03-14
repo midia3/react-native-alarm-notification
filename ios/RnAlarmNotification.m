@@ -634,7 +634,7 @@ RCT_EXPORT_METHOD(sendNotification: (NSDictionary *)details) {
     }
 }
 
-RCT_EXPORT_METHOD(deleteAlarm: (NSInteger *)id){
+RCT_EXPORT_METHOD(deleteAlarm: (NSInteger)id){
     NSLog(@"delete alarm: %li", (long) id);
     if (@available(iOS 10.0, *)) {
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
@@ -645,7 +645,7 @@ RCT_EXPORT_METHOD(deleteAlarm: (NSInteger *)id){
     }
 }
 
-RCT_EXPORT_METHOD(deleteRepeatingAlarm: (NSInteger *)id){
+RCT_EXPORT_METHOD(deleteRepeatingAlarm: (NSInteger)id){
     NSLog(@"delete alarm: %li", (long) id);
     if (@available(iOS 10.0, *)) {
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
